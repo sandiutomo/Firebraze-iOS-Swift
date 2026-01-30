@@ -2,15 +2,16 @@ Project Name : Firebraze
 iOS template Functionalities for sending GA4 analytics events to Braze via Google Tag Manager.
 
 🚀 Features
-Ability to log Braze custom events & purchase events - mapped to GA4 events data model structure (from custom events to ecommerce events with items ecommerce array parsing)
-Ability to log Braze custom attributes, parsing String, Int, Floating, Boolean
-Ability to log Braze default user attributes
-Ability to log Braze change user id
-Ability to log Braze set user subscription state
+- Ability to log Braze custom events & purchase events - mapped to GA4 events data model structure (from custom events to ecommerce events with items ecommerce array parsing)
+- Ability to log Braze custom attributes, parsing String, Int, Floating, Boolean
+- Ability to log Braze default user attributes
+- Ability to log Braze change user id
+- Ability to log Braze set user subscription state
 
 
 🧱 Tech Stack
 Language: Swift
+
 Platform: iOS
 
 Tools & SDKs:
