@@ -5,9 +5,7 @@ It acts as a translation layer between GA4’s event & ecommerce data model and 
 
 This project is designed for teams who want consistent analytics instrumentation, scalable event governance, and clean separation between app code and marketing SDK logic.
 
-
 🚀 Key Features
-
 GA4 → Braze Event Mapping
 
 Log Braze custom events and purchase events
@@ -38,10 +36,9 @@ GTM-First Architecture
 
 Centralized event logic via Google Tag Manager
 
-Minimal coupling between app code and Braze SDK
+Minimal coupling between app code and the Braze SDK
 
 Easy to extend for additional destinations or schemas
-
 
 🧱 Tech Stack
 
@@ -56,7 +53,6 @@ Firebase SDK
 Google Tag Manager SDK
 
 Braze iOS SDK
-
 
 📦 Installation
 Prerequisites
@@ -89,14 +85,16 @@ Map GA4 event parameters to Braze via GTM tags
 
 Detailed setup instructions can be added in a dedicated docs/ section if needed.
 
-
 🤝 Contributing
 
 Contributions are welcome!
 
-Fork the repo
+Fork the repository
 
-Create a feature branch (feature/my-feature)
+Create a feature branch
+
+feature/my-feature
+
 
 Commit your changes
 
@@ -105,9 +103,6 @@ Open a Pull Request
 👤 Author
 
 Sandi Utomo
-
 CXM Solution Architect
 
 LinkedIn: https://www.linkedin.com/in/sandiutomo/
-
-Email: hi.sandiutomo@gmail.com
