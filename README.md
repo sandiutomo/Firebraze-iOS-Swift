@@ -104,12 +104,10 @@ Commit your changes
 Open a Pull Request
 
 
+
 👤 Author
 
-Sandi Utomo
+Sandi Utomo, CXM Solution Architect
 
-CXM Solution Architect
-
-LinkedIn: https://www.linkedin.com/in/sandiutomo/
-
-Email: hi.sandiutomo@gmail.com
+- LinkedIn: https://www.linkedin.com/in/sandiutomo/
+- Email: hi.sandiutomo@gmail.com
