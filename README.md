@@ -1,39 +1,113 @@
-Project Name : Firebraze
-iOS template Functionalities for sending GA4 analytics events to Braze via Google Tag Manager.
+Firebraze
 
-🚀 Features
-- Ability to log Braze custom events & purchase events - mapped to GA4 events data model structure (from custom events to ecommerce events with items ecommerce array parsing)
-- Ability to log Braze custom attributes, parsing String, Int, Floating, Boolean
-- Ability to log Braze default user attributes
-- Ability to log Braze change user id
-- Ability to log Braze set user subscription state
+Firebraze is an iOS template that enables sending GA4-structured analytics events to Braze via Google Tag Manager (GTM).
+It acts as a translation layer between GA4’s event & ecommerce data model and Braze’s event, purchase, and user attribute APIs.
+
+This project is designed for teams who want consistent analytics instrumentation, scalable event governance, and clean separation between app code and marketing SDK logic.
+
+
+🚀 Key Features
+
+GA4 → Braze Event Mapping
+
+Log Braze custom events and purchase events
+
+Supports GA4 ecommerce schema, including full items[] array parsing
+
+Works for both standard GA4 ecommerce events and custom events
+
+Braze User Attribute Management
+
+Log custom user attributes with automatic type parsing:
+
+String
+
+Int
+
+Float / Double
+
+Boolean
+
+Set default Braze user attributes
+
+Change Braze user ID dynamically
+
+Update user subscription state (email / push)
+
+GTM-First Architecture
+
+Centralized event logic via Google Tag Manager
+
+Minimal coupling between app code and Braze SDK
+
+Easy to extend for additional destinations or schemas
 
 
 🧱 Tech Stack
+
 Language: Swift
 
 Platform: iOS
 
-Tools & SDKs:
+SDKs & Tools
+
 Firebase SDK
+
 Google Tag Manager SDK
-Braze SDK
+
+Braze iOS SDK
+
 
 📦 Installation
 Prerequisites
-Xcode 16.4x
-CocoaPods / Swift Package Manager (if applicable)
+
+Xcode 16.4+
+
+iOS deployment target compatible with Braze & Firebase SDKs
+
+Dependency manager:
+
+CocoaPods or
+
+Swift Package Manager
+
+Setup (High Level)
+
+Clone the repository
+
+Install dependencies
+
+Configure:
+
+Firebase
+
+Google Tag Manager container
+
+Braze SDK credentials
+
+Map GA4 event parameters to Braze via GTM tags
+
+Detailed setup instructions can be added in a dedicated docs/ section if needed.
+
 
 🤝 Contributing
+
 Contributions are welcome!
+
 Fork the repo
+
 Create a feature branch (feature/my-feature)
+
 Commit your changes
+
 Open a Pull Request
 
 👤 Author
 
 Sandi Utomo
+
 CXM Solution Architect
+
 LinkedIn: https://www.linkedin.com/in/sandiutomo/
+
 Email: hi.sandiutomo@gmail.com
