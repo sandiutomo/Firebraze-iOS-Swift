@@ -1,0 +1,12 @@
+framework module GoogleTagManager {
+umbrella header "GoogleTagManager-umbrella.h"
+export *
+module * { export * }
+  link framework "AdSupport"
+  link framework "CoreTelephony"
+  link framework "JavaScriptCore"
+  link framework "SystemConfiguration"
+  link framework "UIKit"
+  link "sqlite3"
+  link "z"
+}

@@ -1,0 +1,4 @@
+framework module BrazeKit {
+  header "BrazeKit-Swift.h"
+  requires objc
+}

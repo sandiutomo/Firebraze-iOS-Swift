@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "BFE77D5F-3DD8-484C-B6E6-4B8AB9DC6656"
+   type = "0"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "EC873A8B-A571-4071-A8FA-50679542916B"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "dummy.app.2026/BrazeGTMTagManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "145"
+            endingLineNumber = "145"
+            landmarkName = "handleEcommerceEvent(eventName:parameters:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "EC873A8B-A571-4071-A8FA-50679542916B - f4a72afc11337b81"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "dummy_app_2026.BrazeGTMTagManager.handleEcommerceEvent(eventName: Swift.String, parameters: Swift.Dictionary&lt;Swift.String, Any&gt;) -&gt; ()"
+                  moduleName = "dummy.app.2026.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sandiutomo/Desktop/App-Development/iOS-Apps/dummy.app.2026/dummy.app.2026/BrazeGTMTagManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "145"
+                  endingLineNumber = "145">
+               </Location>
+               <Location
+                  uuid = "EC873A8B-A571-4071-A8FA-50679542916B - f4a72afc11337847"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "dummy_app_2026.BrazeGTMTagManager.handleEcommerceEvent(eventName: Swift.String, parameters: Swift.Dictionary&lt;Swift.String, Any&gt;) -&gt; ()"
+                  moduleName = "dummy.app.2026.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sandiutomo/Desktop/App-Development/iOS-Apps/dummy.app.2026/dummy.app.2026/BrazeGTMTagManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "147"
+                  endingLineNumber = "147">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>
