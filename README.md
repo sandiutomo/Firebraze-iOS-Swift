@@ -89,25 +89,10 @@ Setup (High Level)
     - Map GA4 event parameters to Braze via GTM tags. Detailed setup instructions can be added in a dedicated docs/ section if needed.
 
 
-🤝 Contributing
-
-Contributions are welcome!
-
-Fork the repository
-
-Create a feature branch
-
-feature/my-feature
-
-Commit your changes
-
-Open a Pull Request
 
 
 
-👤 Author
-
-Sandi Utomo, CXM Solution Architect
-
+👤 Author:
+- Sandi Utomo, CXM Solution Architect
 - LinkedIn: https://www.linkedin.com/in/sandiutomo/
 - Email: hi.sandiutomo@gmail.com
