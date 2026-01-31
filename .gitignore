@@ -1,3 +1,10 @@
+BrazeSecrets.plist
+GoogleTagManagerSecrets.plist
+
+dummy.app.2026/BrazeSecrets.plist
+dummy.app.2026/GoogleTagManagerSecrets.plist
+
+
 # =========================
 # Google Tag Manager (iOS)
 # =========================
