@@ -15,8 +15,8 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         // MARK: - Braze SDK initialize
         Braze.prepareForDelayedInitialization()
         let configuration = Braze.Configuration(
-            apiKey: "66236c90-12f9-4198-8c17-fe36b8962d24",
-            endpoint: "sdk.fra-01.braze.eu/"
+            apiKey: BrazeSecrets.apiKey,
+            endpoint: BrazeSecrets.endpoint
         )
         
         // Braze debug verbose level
@@ -105,9 +105,9 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         // === STEP 3: Try different paths ===
         print("# ⚙️ === TRYING DIFFERENT PATHS === ⚙️")
            let pathsToTry = [
-               Bundle.main.path(forResource: "GTM-WTRVC489", ofType: "json"),
-               Bundle.main.path(forResource: "GTM-WTRVC489", ofType: "json", inDirectory: "container"),
-               Bundle.main.path(forResource: "container/GTM-WTRVC489", ofType: "json")
+               Bundle.main.path(forResource: GoogleTagManagerSecrets.apiKey, ofType: "json"),
+               Bundle.main.path(forResource: GoogleTagManagerSecrets.apiKey, ofType: "json", inDirectory: "container"),
+               Bundle.main.path(forResource: "container/\(GoogleTagManagerSecrets.apiKey)", ofType: "json")
            ]
            for (index, path) in pathsToTry.enumerated() {
                if let path = path {
@@ -149,5 +149,44 @@ struct dummy_app_2026App: App {
         WindowGroup {
             ContentView()
         }
+    }
+}
+
+
+enum BrazeSecrets {
+    static let apiKey: String = {
+        value(for: "BRAZE_API_KEY")
+    }()
+
+    static let endpoint: String = {
+        value(for: "BRAZE_ENDPOINT")
+    }()
+
+    private static func value(for key: String) -> String {
+        guard
+            let path = Bundle.main.path(forResource: "BrazeSecrets", ofType: "plist"),
+            let dict = NSDictionary(contentsOfFile: path),
+            let value = dict[key] as? String
+        else {
+            fatalError("❌ Missing \(key) in BrazeSecrets.plist")
+        }
+        return value
+    }
+}
+
+enum GoogleTagManagerSecrets {
+    static let apiKey: String = {
+        value(for: "GTM_CONTAINER_ID")
+    }()
+
+    private static func value(for key: String) -> String {
+        guard
+            let path = Bundle.main.path(forResource: "GoogleTagManagerSecrets", ofType: "plist"),
+            let dict = NSDictionary(contentsOfFile: path),
+            let value = dict[key] as? String
+        else {
+            fatalError("❌ Missing \(key) in GoogleTagManagerSecrets.plist")
+        }
+        return value
     }
 }

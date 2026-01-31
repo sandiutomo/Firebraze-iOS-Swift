@@ -61,6 +61,25 @@
 		EDABD08023463E3A020BDDF1 /* Pods_dummy_app_2026Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_dummy_app_2026Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		76CC50DD2F2DB27E00DBC83A /* Exceptions for "dummy.app.2026" folder in "dummy.app.2026Tests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				BrazeSecrets.plist,
+				GoogleTagManagerSecrets.plist,
+			);
+			target = 761550232F216A0B000F14AE /* dummy.app.2026Tests */;
+		};
+		76CC50DE2F2DB27E00DBC83A /* Exceptions for "dummy.app.2026" folder in "dummy.app.2026UITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				BrazeSecrets.plist,
+				GoogleTagManagerSecrets.plist,
+			);
+			target = 7615502D2F216A0B000F14AE /* dummy.app.2026UITests */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		761550272F216A0B000F14AE /* dummy.app.2026Tests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
@@ -74,6 +93,14 @@
 		};
 		763C9ACB2F29EEDB00D306BA /* dummy.app.2026 */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				76CC50DD2F2DB27E00DBC83A /* Exceptions for "dummy.app.2026" folder in "dummy.app.2026Tests" target */,
+				76CC50DE2F2DB27E00DBC83A /* Exceptions for "dummy.app.2026" folder in "dummy.app.2026UITests" target */,
+			);
+			explicitFileTypes = {
+				BrazeSecrets.plist = text.plist.info;
+				GoogleTagManagerSecrets.plist = text.plist.info;
+			};
 			explicitFolders = (
 				container,
 			);

@@ -4,3 +4,9 @@
 dummy.app.2026/container/
 dummy.app.2026/container/GTM-*.json
 
+# =========================
+# Firebase / Google Services
+# =========================
+GoogleService-Info.plist
+dummy.app.2026/GoogleService-Info.plist
+
