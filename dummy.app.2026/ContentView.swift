@@ -219,7 +219,7 @@ struct ContentView: View {
                 Analytics.logEvent("subscription_status", parameters: [
                     "email_subscription": "opted_in", // use interchangeably opted_in, opted_out, subscribed, unsubscribed
                     "push_subscription": "opted_out", // use interchangeably opted_in, opted_out, subscribed, unsubscribed
-                    "whtasapp_subscription": "36bba8fd-c772-4ca2-8a83-81bbc411501d" // use interchangeably 36bba8fd-c772-4ca2-8a83-81bbc411501d, ba5e1b75-1fc4-4ea4-bfff-5e9edf32c1d2
+                    "whatsapp_subscription": "36bba8fd-c772-4ca2-8a83-81bbc411501d" // use interchangeably 36bba8fd-c772-4ca2-8a83-81bbc411501d, ba5e1b75-1fc4-4ea4-bfff-5e9edf32c1d2
                 ])
                 print("~ logged event: Subscription Status!")
             }) {
