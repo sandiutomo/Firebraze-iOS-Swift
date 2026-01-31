@@ -15,10 +15,9 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         // MARK: - Braze SDK initialize
         Braze.prepareForDelayedInitialization()
         let configuration = Braze.Configuration(
-            apiKey: BrazeSecrets.apiKey,
-            endpoint: BrazeSecrets.endpoint
+            apiKey: BrazeSecrets.apiKey, // TODO: Replace with your own apiKey
+            endpoint: BrazeSecrets.endpoint // TODO: Replace with your own endpoint
         )
-        
         // Braze debug verbose level
         #if DEBUG
         configuration.logger.level = .debug
@@ -105,9 +104,9 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         // === STEP 3: Try different paths ===
         print("# ⚙️ === TRYING DIFFERENT PATHS === ⚙️")
            let pathsToTry = [
-               Bundle.main.path(forResource: GoogleTagManagerSecrets.apiKey, ofType: "json"),
-               Bundle.main.path(forResource: GoogleTagManagerSecrets.apiKey, ofType: "json", inDirectory: "container"),
-               Bundle.main.path(forResource: "container/\(GoogleTagManagerSecrets.apiKey)", ofType: "json")
+               Bundle.main.path(forResource: GoogleTagManagerSecrets.apiKey, ofType: "json"),  // TODO: Replace with your own container id
+               Bundle.main.path(forResource: GoogleTagManagerSecrets.apiKey, ofType: "json", inDirectory: "container"), // TODO: Replace with your own container id
+               Bundle.main.path(forResource: "container/\(GoogleTagManagerSecrets.apiKey)", ofType: "json") // TODO: Replace with your own container id
            ]
            for (index, path) in pathsToTry.enumerated() {
                if let path = path {
@@ -132,6 +131,7 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         }
         return true
     }
+    
     // MARK: - Handle device token registration
     func application(_ application: UIApplication,
                      didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
@@ -151,7 +151,6 @@ struct dummy_app_2026App: App {
         }
     }
 }
-
 
 enum BrazeSecrets {
     static let apiKey: String = {
@@ -173,7 +172,6 @@ enum BrazeSecrets {
         return value
     }
 }
-
 enum GoogleTagManagerSecrets {
     static let apiKey: String = {
         value(for: "GTM_CONTAINER_ID")

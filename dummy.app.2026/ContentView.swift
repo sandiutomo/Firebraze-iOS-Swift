@@ -11,7 +11,6 @@ struct ContentView: View {
             // MARK: -
             Button(action: {
                 Analytics.setUserID(userIdValue)
-                Analytics.setUserProperty(userIdValue, forName: "user_id")
                 
                 Analytics.logEvent(AnalyticsEventLogin,
                                    parameters: [ "method": "Email"
