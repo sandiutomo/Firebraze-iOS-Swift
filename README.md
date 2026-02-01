@@ -1,4 +1,4 @@
-# Braze GTM Tag Manager - iOS & Android Template
+# Braze GTM Tag Manager - iOS Template
 
 Complete integration template for **Firebase Analytics + Google Tag Manager + Braze** with support for:
 - ✅ Custom Events
@@ -84,48 +84,6 @@ extension AppDelegate {
 
 ---
 
-### Android (Kotlin)
-
-1. **Add Dependencies** (build.gradle):
-```gradle
-dependencies {
-    implementation 'com.google.firebase:firebase-analytics-ktx'
-    implementation 'com.google.android.gms:play-services-tagmanager'
-    implementation 'com.braze:android-sdk-ui:+'
-}
-```
-
-2. **Add BrazeGTMTagManager.kt** to your project
-
-3. **Register in Application class**:
-```kotlin
-import com.braze.Braze
-import com.braze.configuration.BrazeConfig
-import com.google.android.gms.tagmanager.TagManager
-
-class MyApplication : Application() {
-    override fun onCreate() {
-        super.onCreate()
-        
-        // Initialize Braze
-        Braze.configure(this, BrazeConfig.Builder()
-            .setApiKey("YOUR-API-KEY")
-            .setCustomEndpoint("YOUR-ENDPOINT")
-            .build())
-        
-        // Initialize GTM
-        val tagManager = TagManager.getInstance(this)
-        val pending = tagManager.loadContainerPreferFresh("GTM-XXXXXX", -1)
-        pending.setResultCallback { container ->
-            container.container?.refresh()
-        }
-    }
-}
-```
-
-4. **Register Custom Function in GTM binary container** (follow GTM Android documentation)
-
----
 
 ## 📝 GTM Tag Configuration Examples
 
@@ -169,39 +127,7 @@ transaction_id   | {{transaction_id}}
 
 ---
 
-**Step 1 — Firebase fires the event (Kotlin):**
-```kotlin
-analytics.logEvent(FirebaseAnalytics.Event.PURCHASE) {
-    param(FirebaseAnalytics.Param.TRANSACTION_ID, "TXN-1706123456A")
-    param(FirebaseAnalytics.Param.CURRENCY, "IDR")
-    param(FirebaseAnalytics.Param.VALUE, 200000.0)
-    param(FirebaseAnalytics.Param.TAX, 0.0)
-    param(FirebaseAnalytics.Param.SHIPPING, 0.0)
-    param(FirebaseAnalytics.Param.COUPON, "SAVE10")
-    param(FirebaseAnalytics.Param.ITEMS, arrayOf(
-        Bundle().apply {
-            putString(FirebaseAnalytics.Param.ITEM_ID, "sku_001")
-            putString(FirebaseAnalytics.Param.ITEM_NAME, "Wireless Headphones")
-            putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "Electronics")
-            putString(FirebaseAnalytics.Param.ITEM_BRAND, "SonyAudio")
-            putString(FirebaseAnalytics.Param.ITEM_VARIANT, "Black")
-            putDouble(FirebaseAnalytics.Param.PRICE, 50000.0)
-            putLong(FirebaseAnalytics.Param.QUANTITY, 2)
-        },
-        Bundle().apply {
-            putString(FirebaseAnalytics.Param.ITEM_ID, "sku_002")
-            putString(FirebaseAnalytics.Param.ITEM_NAME, "USB-C Cable")
-            putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "Accessories")
-            putString(FirebaseAnalytics.Param.ITEM_BRAND, "Anker")
-            putString(FirebaseAnalytics.Param.ITEM_VARIANT, "1m")
-            putDouble(FirebaseAnalytics.Param.PRICE, 100000.0)
-            putLong(FirebaseAnalytics.Param.QUANTITY, 1)
-        }
-    ))
-}
-```
-
-**Swift equivalent:**
+**Step 1 — Firebase fires the event **Swift :**
 ```swift
 Analytics.logEvent(AnalyticsEventPurchase, parameters: [
     AnalyticsParameterTransactionID: "TXN-1706123456A",
@@ -275,25 +201,7 @@ Properties attached to each item:
 
 ---
 
-**Step 4 — Expected Logcat output (Android):**
-```
-D/BrazeGTM: # 🔍 ===== BrazeGTMTagManager EXECUTE ===== 🔍
-D/BrazeGTM: # ✅ 1. Action Type determined: logPurchase
-D/BrazeGTM: #    🔷 Routing to logPurchase 🔷
-D/BrazeGTM: #    💰  transaction_id: TXN-1706123456A
-D/BrazeGTM: #    💰  currency: IDR
-D/BrazeGTM: # 🔍 Found 2 items - logging one purchase per item
-D/BrazeGTM: #    🛍 Item 1: Wireless Headphones (SKU: sku_001, Price: 50000.0, Qty: 2)
-D/BrazeGTM: #        ⏩ Braze purchase logged - Product Name: Wireless Headphones, SKU: sku_001
-D/BrazeGTM: #    🛍 Item 2: USB-C Cable (SKU: sku_002, Price: 100000.0, Qty: 1)
-D/BrazeGTM: #        ⏩ Braze purchase logged - Product Name: USB-C Cable, SKU: sku_002
-D/BrazeGTM: #    🧾 All purchases logged - Total items: 2, Transaction: TXN-1706123456A
-D/BrazeGTM: # ✅ 2. GTM Braze tag execution completed
-```
-
----
-
-**Step 5 — Verify in Braze Dashboard:**
+**Step 4 — Verify in Braze Dashboard:**
 - Go to **Settings** → **User Search** → search external user ID
 - Click **Custom Events** tab → look for purchase events
 - Each item appears as a **separate purchase entry** with its own properties
@@ -377,33 +285,6 @@ Analytics.logEvent(AnalyticsEventPurchase, parameters: [
 ])
 ```
 
-**Kotlin:**
-```kotlin
-// Log custom event
-firebaseAnalytics.logEvent("button_clicked") {
-    param("button_name", "signup")
-}
-
-// Set user attributes
-firebaseAnalytics.setUserProperty("email", "test@example.com")
-firebaseAnalytics.setUserProperty("first_name", "John")
-
-// Log purchase
-firebaseAnalytics.logEvent(FirebaseAnalytics.Event.PURCHASE) {
-    param(FirebaseAnalytics.Param.CURRENCY, "USD")
-    param(FirebaseAnalytics.Param.VALUE, 29.99)
-    param(FirebaseAnalytics.Param.TRANSACTION_ID, "TXN123")
-    param(FirebaseAnalytics.Param.ITEMS, arrayOf(
-        Bundle().apply {
-            putString(FirebaseAnalytics.Param.ITEM_ID, "SKU001")
-            putString(FirebaseAnalytics.Param.ITEM_NAME, "Premium Plan")
-            putDouble(FirebaseAnalytics.Param.PRICE, 29.99)
-            putLong(FirebaseAnalytics.Param.QUANTITY, 1)
-        }
-    ))
-}
-```
-
 ---
 
 ## 📊 Data Format Requirements
@@ -443,11 +324,6 @@ firebaseAnalytics.logEvent(FirebaseAnalytics.Event.PURCHASE) {
 -FIRAnalyticsDebugEnabled
 ```
 
-**Android:**
-```kotlin
-// Add to Application class
-Braze.getInstance(this).enableSdkLogging()
-```
 
 ### Check Logs
 
@@ -457,14 +333,6 @@ Braze.getInstance(this).enableSdkLogging()
 📍 'actionType' = 'logEvent'
 ✅ Action Type determined: logEvent
 ⏩ Braze custom event logged: button_clicked
-```
-
-**Android (Logcat):**
-```
-D/BrazeGTM: ===== BrazeGTMTagManager EXECUTE =====
-D/BrazeGTM: 📍 'actionType' = 'logEvent'
-D/BrazeGTM: ✅ Action Type determined: logEvent
-D/BrazeGTM: ⏩ Braze custom event logged: button_clicked
 ```
 
 ---
@@ -555,16 +423,6 @@ Analytics.logEvent("subscription_preference_changed", parameters: [
 // GTM tag will call: addToSubscriptionGroup with the group ID
 ```
 
-**Kotlin:**
-```kotlin
-// User opts into marketing emails
-firebaseAnalytics.logEvent("subscription_preference_changed") {
-    param("group_type", "marketing_emails")
-    param("action", "add")
-}
-
-// GTM tag will call: addToSubscriptionGroup with the group ID
-```
 
 ### Best Practices
 
