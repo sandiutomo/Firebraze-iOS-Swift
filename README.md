@@ -30,104 +30,40 @@ Complete integration template for **Firebase Analytics + Google Tag Manager + Br
 
 ---
 
-## 🚀 Setup Instructions
-
-### iOS (Swift)
-
-1. **Add Dependencies** (Podfile):
-```ruby
-pod 'Firebase/Analytics'
-pod 'GoogleTagManager'
-pod 'BrazeKit'
-```
-
-2. **Add BrazeGTMTagManager.swift** to your project
-
-3. **Register in AppDelegate**:
-```swift
-import GoogleTagManager
-
-func application(_ application: UIApplication, 
-                 didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-    
-    // Initialize Firebase
-    FirebaseApp.configure()
-    
-    // Initialize Braze
-    let configuration = Braze.Configuration(apiKey: "YOUR-API-KEY", endpoint: "YOUR-ENDPOINT")
-    let braze = Braze(configuration: configuration)
-    AppDelegate.braze = braze
-    
-    // Initialize GTM
-    let tagManager = TAGManager.instance()
-    TAGContainerOpener.openContainer(withId: "GTM-XXXXXX",
-                                     tagManager: tagManager,
-                                     openType: kTAGOpenTypePreferFresh,
-                                     timeout: nil) { container in
-        container?.refresh()
-    }
-    
-    return true
-}
-```
-
-4. **Add AppDelegate.braze static property**:
-```swift
-extension AppDelegate {
-    private static var _braze: Braze?
-    static var braze: Braze? {
-        get { _braze }
-        set { _braze = newValue }
-    }
-}
-```
-
----
-
-
 ## 📝 GTM Tag Configuration Examples
 
 ### Custom Event
 ```
 Tag Type: Function Call
-Class Name: {{Class Function Name}}  (iOS) or Function Name: BrazeGTMTagManager (Android)
+Class Name: BrazeGTMTagManager
 
-Key              | Value
------------------|-----------------
-actionType       | logEvent
-eventName        | {{Event Name}}
+Key                       | Value
+--------------------------|--------------------------------
+actionType                | logEvent
+eventName                 | {{Event Name}}
+YOUR_CUSTOM_PARAM_KEY     | {{YOUR_CUSTOM_PARAM_VALUE}}
 ```
 
 ### User Attribute
 ```
 Tag Type: Function Call
+Class Name: BrazeGTMTagManager
 
 Key              | Value
 -----------------|--------------------------
 actionType       | userAttribute
-attributeKey     | email
-attributeValue   | {{UP - User Attribute - email}}
+attributeKey     | email (or firstName, lastName, phone, gender, dateOfBirth, country, language, homeCity)
+attributeValue   | {{UP - USER_ATTRIBUTE_VALUE}}
 ```
 
 ### Purchase Event
-```
-Tag Type: Function Call
 
-Key              | Value
------------------|--------------------------
-actionType       | logPurchase
-currency         | {{currency}}
-items            | {{items}}
-transaction_id   | {{transaction_id}}
-```
-
-#### 💰 logPurchase — Full Example
-
-**How it works:** Firebase fires a `purchase` event → GTM intercepts it → `BrazeGTMTagManager` logs **one Braze purchase per item** (Braze requires individual `logPurchase` calls per product).
+> **⚠️ DEPRECATION NOTICE:**  
+> The `logPurchase` action type is **soon to be deprecated** in favor of using standard custom events for ecommerce tracking. This implementation now routes purchase events to **both** `logPurchase` (for backward compatibility) **and** the custom event "ecommerce.order_placed" via `logEvent` to future-proof your analytics.
 
 ---
 
-**Step 1 — Firebase fires the event **Swift :**
+**Step 1 — Firebase fires the event:**
 ```swift
 Analytics.logEvent(AnalyticsEventPurchase, parameters: [
     AnalyticsParameterTransactionID: "TXN-1706123456A",
@@ -173,8 +109,19 @@ actionType         | logPurchase
 currency           | {{Event Value - currency}}
 transaction_id     | {{Event Value - transaction_id}}
 items              | {{Event Value - items}}
+```
+```
+Tag Name:    Braze - Log Ecommerce Order Placed
+Tag Type:    Function Call
+Function:    BrazeGTMTagManager
 
-Trigger:    Purchase (built-in GA4 purchase event)
+Key                | Value
+-------------------|----------------------------------------
+actionType         | logEvent
+eventName          | {{Event Name}}
+currency           | {{Event Value - currency}}
+value              | {{Event Value - value}}
+items              | {{Event Value - items}}
 ```
 
 ---
@@ -185,27 +132,12 @@ Input (2 items):
   items[0] → sku_001 | Wireless Headphones | IDR 50,000 x 2
   items[1] → sku_002 | USB-C Cable         | IDR 100,000 x 1
 
-Output (2 separate Braze logPurchase calls):
+Output (2 separate Braze logPurchase calls + 1 custom event):
   ├── logPurchase("Wireless Headphones", "IDR", 50000.0, qty=2, properties)
-  └── logPurchase("USB-C Cable",         "IDR", 100000.0, qty=1, properties)
-
-Properties attached to each item:
-  product_id     → sku_001 / sku_002
-  price          → 50000.0 / 100000.0
-  transaction_id → TXN-1706123456A
-  category       → Electronics / Accessories
-  brand          → SonyAudio / Anker
-  variant        → Black / 1m
-  value          → 200000.0 (total order value)
+  ├── logPurchase("USB-C Cable",         "IDR", 100000.0, qty=1, properties)
+  └── logCustomEvent("ecommerce.order_placed"), with full order details: ("Wireless Headphones", "IDR", 50000.0, qty=2, properties)
+  └── logCustomEvent("ecommerce.order_placed"), with full order details: ("USB-C Cable",         "IDR", 100000.0, qty=1, properties)
 ```
-
----
-
-**Step 4 — Verify in Braze Dashboard:**
-- Go to **Settings** → **User Search** → search external user ID
-- Click **Custom Events** tab → look for purchase events
-- Each item appears as a **separate purchase entry** with its own properties
-- All entries share the same `transaction_id` so you can group them
 
 ---
 
@@ -215,6 +147,7 @@ Properties attached to each item:
 - `product_id` (SKU) is passed inside properties for reference
 - `quantity` handles multiples of the same item (e.g. buying 2 headphones = qty 2, not 2 separate calls)
 - `value` in properties is the **total order value**, not the per-item value
+- **Future-proofing:** This implementation automatically creates `ecommerce.order_placed` custom events alongside `logPurchase` calls to ensure continuity when Braze deprecates the purchase API
 
 ### Email Subscription
 ```
@@ -260,7 +193,7 @@ subscriptionGroupId    | your-group-id-from-braze-dashboard
 
 ## 🎯 Usage Examples
 
-### Firebase Analytics (Both Platforms)
+### Firebase Analytics
 
 **Swift:**
 ```swift
@@ -271,7 +204,7 @@ Analytics.logEvent("button_clicked", parameters: ["button_name": "signup"])
 Analytics.setUserProperty("test@example.com", forName: "email")
 Analytics.setUserProperty("John", forName: "first_name")
 
-// Log purchase
+// Log purchase (automatically routes to both logPurchase and ecommerce.order_placed)
 Analytics.logEvent(AnalyticsEventPurchase, parameters: [
     AnalyticsParameterCurrency: "USD",
     AnalyticsParameterValue: 29.99,
@@ -337,6 +270,35 @@ Analytics.logEvent(AnalyticsEventPurchase, parameters: [
 
 ---
 
+## 🔐 Security Best Practices
+
+### Never Commit Secrets to Git
+
+1. **Always use `.gitignore`** to exclude sensitive files:
+```bash
+# .gitignore
+dummy.app.2026/secrets/
+*.plist
+*Secrets*
+```
+
+2. **Use environment-specific configuration files:**
+   - Development: `BrazeSecrets-Dev.plist`
+   - Staging: `BrazeSecrets-Staging.plist`
+   - Production: `BrazeSecrets-Prod.plist`
+
+3. **Rotate API keys immediately** if accidentally exposed:
+   - Braze: Generate new API key in Braze Dashboard → Settings → API Keys
+   - GTM: Create new container or regenerate credentials
+   - Firebase: Regenerate GoogleService-Info.plist
+
+4. **Use CI/CD secrets management** for production builds:
+   - GitHub Actions Secrets
+   - Xcode Cloud environment variables
+   - Fastlane environment variables
+
+---
+
 ## 🤝 Contributing
 
 This is a template for integrating Firebase Analytics + GTM + Braze. Feel free to:
@@ -364,15 +326,17 @@ For issues:
 
 ## ✅ Checklist for Implementation
 
-- [ ] Add dependencies (CocoaPods/Gradle)
+- [ ] Add dependencies (CocoaPods)
 - [ ] Copy BrazeGTMTagManager file to project
-- [ ] Configure Firebase (GoogleService-Info.plist / google-services.json)
-- [ ] Initialize Braze with API key and endpoint
-- [ ] Set up GTM container
+- [ ] Create `secrets/` folder and add configuration files
+- [ ] Add `secrets/` to `.gitignore`
+- [ ] Configure Firebase (GoogleService-Info.plist)
+- [ ] Initialize Braze with secrets loaded from plist
+- [ ] Set up GTM container with secrets
 - [ ] Create GTM tags for events
 - [ ] Create GTM triggers
 - [ ] Test with debug builds
-- [ ] Verify data in Braze dashboard
+- [ ] Verify both `logPurchase` and `ecommerce.order_placed` events in Braze dashboard
 - [ ] Deploy to production
 
 ---
@@ -439,3 +403,26 @@ Analytics.logEvent("subscription_preference_changed", parameters: [
 | Values | opted_in, subscribed, unsubscribed | Member/Not Member |
 | Use Case | GDPR compliance, global preferences | Message categorization |
 | Example | "Unsubscribe from all emails" | "Unsubscribe from marketing only" |
+
+---
+
+## 🔄 Migration Path for logPurchase Deprecation
+
+When Braze officially deprecates `logPurchase`, your implementation is already prepared:
+
+1. **Current State (Now):**
+   - Purchase events trigger both `logPurchase()` and `ecommerce.order_placed`
+   - Both appear in Braze dashboard
+   - No data loss
+
+2. **Transition Period:**
+   - Continue monitoring both event types
+   - Validate that `ecommerce.order_placed` contains all necessary data
+   - Update any dashboards/reports to reference the new event
+
+3. **Post-Deprecation:**
+   - Simply remove the `logPurchase` routing from BrazeGTMTagManager.swift
+   - All purchase data will flow exclusively through `ecommerce.order_placed`
+   - Zero downtime, zero data loss
+
+**No action required from you** — the dual-logging system ensures continuity automatically.
