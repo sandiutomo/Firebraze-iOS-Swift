@@ -17,3 +17,4 @@ dummy.app.2026/container/GTM-*.json
 GoogleService-Info.plist
 dummy.app.2026/GoogleService-Info.plist
 
+dummy.app.2026/secrets/
