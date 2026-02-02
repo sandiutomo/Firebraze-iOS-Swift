@@ -40,7 +40,7 @@ struct ContentView: View {
                     // Bool
                     "param_bool": true,
                     
-                    // Bool
+                    // Array
                     "param_test_array": ["test", "array", "string", "value"],
                     
                     // Timestamp (Int)
@@ -203,7 +203,6 @@ struct ContentView: View {
                 ]
                 
                 Analytics.logEvent(AnalyticsEventPurchase, parameters: purchaseParams)
-                print("~ logged event: Purchase!")
                 print("~ logged event: Purchase!")
             }) {
                 Text("Purchase")

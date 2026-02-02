@@ -140,10 +140,8 @@ final class BrazeGTMTagManager : NSObject, TAGCustomFunction {
             brazeEventName = "ecommerce.cart_viewed"
         case "begin_checkout":
             brazeEventName = "ecommerce.checkout_started"
-        case "add_payment_info", "add_shipping_info":
+        case "purchase":
             brazeEventName = "ecommerce.order_placed"
-            /*      case "purchase":
-             brazeEventName = "ecommerce.xxxxxx" */ // preparation for new purchase event to be released in 2026
         case "refund":
             brazeEventName = "ecommerce.purchase_refunded"
         default:
