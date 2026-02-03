@@ -21,6 +21,7 @@ Complete integration template for **Firebase Analytics + Google Tag Manager + Br
 - Standard attributes: firstName, lastName, email, phone, gender, dateOfBirth, country, language, homeCity
 - Format validation (E.164 phone, ISO-639-1 language, ISO 3166-1 country, YYYY-MM-DD dates)
 - Custom attributes (String, Int, Double, Bool, Date)
+- Logged-in users (user id String)
 
 ### Subscription Management
 - Email subscription states (opted_in, subscribed, unsubscribed)
@@ -32,16 +33,16 @@ Complete integration template for **Firebase Analytics + Google Tag Manager + Br
 
 ## 📝 GTM Tag Configuration Examples
 
-### Custom Event
+### Custom Attribute
 ```
 Tag Type: Function Call
 Class Name: BrazeGTMTagManager
 
-Key                       | Value
---------------------------|--------------------------------
-actionType                | logEvent
-eventName                 | {{Event Name}}
-YOUR_CUSTOM_PARAM_KEY     | {{YOUR_CUSTOM_PARAM_VALUE}}
+Key                    | Value
+-----------------------|--------------------------
+actionType             | customAttribute
+customAttributeKey     | your-custom-attributekey-value
+customAttributeValue   | your-custom-attribute-value
 ```
 
 ### User Attribute
@@ -53,7 +54,30 @@ Key              | Value
 -----------------|--------------------------
 actionType       | userAttribute
 attributeKey     | email (or firstName, lastName, phone, gender, dateOfBirth, country, language, homeCity)
-attributeValue   | {{UP - USER_ATTRIBUTE_VALUE}}
+attributeValue   | your-user-attribute-value
+```
+
+### Change User
+```
+Tag Type: Function Call
+Class Name: BrazeGTMTagManager
+
+Key              | Value
+-----------------|--------------------------
+actionType       | changeUser
+externalUserId   | your_user_id_value
+```
+
+### Custom Event
+```
+Tag Type: Function Call
+Class Name: BrazeGTMTagManager
+
+Key                       | Value
+--------------------------|--------------------------------
+actionType                | logEvent
+eventName                 | {{Event Name}}
+your-custom-param-key     | your-custom-param-value
 ```
 
 ### Purchase Event
@@ -106,12 +130,13 @@ Function:    BrazeGTMTagManager
 Key                | Value
 -------------------|----------------------------------------
 actionType         | logPurchase
-currency           | {{Event Value - currency}}
-transaction_id     | {{Event Value - transaction_id}}
-items              | {{Event Value - items}}
+currency           | {{ecommerce.currency}}
+transaction_id     | {{ecommerce.transaction_id}}
+items              | {{ecommerce.items}}
 ```
+
 ```
-Tag Name:    Braze - Log Ecommerce Order Placed
+Tag Name:    Braze - Ecommerce Order Placed
 Tag Type:    Function Call
 Function:    BrazeGTMTagManager
 
@@ -119,9 +144,9 @@ Key                | Value
 -------------------|----------------------------------------
 actionType         | logEvent
 eventName          | {{Event Name}}
-currency           | {{Event Value - currency}}
-value              | {{Event Value - value}}
-items              | {{Event Value - items}}
+currency           | {{ecommerce.currency}}
+value              | {{ecommerce.value}}
+items              | {{ecommerce.items}}
 ```
 
 ---
@@ -156,7 +181,7 @@ Tag Type: Function Call
 Key                 | Value
 --------------------|--------------------------
 actionType          | setEmailSubscription
-subscriptionState   | opted_in
+subscriptionState   | your-email-subscrption-state-value
 ```
 
 ### Push Subscription
@@ -166,7 +191,7 @@ Tag Type: Function Call
 Key                 | Value
 --------------------|--------------------------
 actionType          | setPushSubscription
-subscriptionState   | subscribed
+subscriptionState   | your-push-subscrption-state-value
 ```
 
 ### Add to Subscription Group
@@ -246,59 +271,6 @@ Analytics.logEvent(AnalyticsEventPurchase, parameters: [
 
 ---
 
-## 🔍 Debugging
-
-### Enable Detailed Logging
-
-**iOS:**
-```swift
-// Add to your scheme's Run arguments
--FIRDebugEnabled
--FIRAnalyticsDebugEnabled
-```
-
-
-### Check Logs
-
-**iOS (Xcode Console):**
-```
-🔍 ===== BrazeGTMTagManager EXECUTE =====
-📍 'actionType' = 'logEvent'
-✅ Action Type determined: logEvent
-⏩ Braze custom event logged: button_clicked
-```
-
----
-
-## 🔐 Security Best Practices
-
-### Never Commit Secrets to Git
-
-1. **Always use `.gitignore`** to exclude sensitive files:
-```bash
-# .gitignore
-dummy.app.2026/secrets/
-*.plist
-*Secrets*
-```
-
-2. **Use environment-specific configuration files:**
-   - Development: `BrazeSecrets-Dev.plist`
-   - Staging: `BrazeSecrets-Staging.plist`
-   - Production: `BrazeSecrets-Prod.plist`
-
-3. **Rotate API keys immediately** if accidentally exposed:
-   - Braze: Generate new API key in Braze Dashboard → Settings → API Keys
-   - GTM: Create new container or regenerate credentials
-   - Firebase: Regenerate GoogleService-Info.plist
-
-4. **Use CI/CD secrets management** for production builds:
-   - GitHub Actions Secrets
-   - Xcode Cloud environment variables
-   - Fastlane environment variables
-
----
-
 ## 🤝 Contributing
 
 This is a template for integrating Firebase Analytics + GTM + Braze. Feel free to:
@@ -324,85 +296,7 @@ For issues:
 
 ---
 
-## ✅ Checklist for Implementation
-
-- [ ] Add dependencies (CocoaPods)
-- [ ] Copy BrazeGTMTagManager file to project
-- [ ] Create `secrets/` folder and add configuration files
-- [ ] Add `secrets/` to `.gitignore`
-- [ ] Configure Firebase (GoogleService-Info.plist)
-- [ ] Initialize Braze with secrets loaded from plist
-- [ ] Set up GTM container with secrets
-- [ ] Create GTM tags for events
-- [ ] Create GTM triggers
-- [ ] Test with debug builds
-- [ ] Verify both `logPurchase` and `ecommerce.order_placed` events in Braze dashboard
-- [ ] Deploy to production
-
----
-
 **Made with ❤️ for seamless analytics integration**
-
-## 📬 Subscription Groups Explained
-
-### What are Subscription Groups?
-
-Subscription Groups allow you to organize your messaging into specific categories that users can opt in/out of independently.
-
-**Examples:**
-- Marketing Emails
-- Transactional Emails  
-- Newsletter
-- Product Updates
-- Promotional SMS
-- Order Status Notifications
-
-### How to Use
-
-1. **Create Subscription Groups in Braze Dashboard:**
-   - Go to **Engagement** → **Subscriptions** → **Subscription Groups**
-   - Click **+ Create Subscription Group**
-   - Note the Group ID (e.g., `subscription_group_id_abc123`)
-
-2. **Add User to Group via GTM:**
-```
-Tag Type: Function Call
-
-Key                    | Value
------------------------|----------------------------------
-actionType             | addToSubscriptionGroup
-subscriptionGroupId    | subscription_group_id_abc123
-```
-
-3. **Example in Firebase Analytics:**
-
-**Swift:**
-```swift
-// User opts into marketing emails
-Analytics.logEvent("subscription_preference_changed", parameters: [
-    "group_type": "marketing_emails",
-    "action": "add"
-])
-
-// GTM tag will call: addToSubscriptionGroup with the group ID
-```
-
-
-### Best Practices
-
-- Use subscription groups for **granular control** over message types
-- Use subscription states for **global** opt-in/out preferences
-- Always respect user preferences immediately
-- Sync subscription preferences across platforms
-
-### Subscription Groups vs Subscription States
-
-| Feature | Subscription States | Subscription Groups |
-|---------|-------------------|-------------------|
-| Scope | Global (email/push) | Specific message types |
-| Values | opted_in, subscribed, unsubscribed | Member/Not Member |
-| Use Case | GDPR compliance, global preferences | Message categorization |
-| Example | "Unsubscribe from all emails" | "Unsubscribe from marketing only" |
 
 ---
 
@@ -424,5 +318,3 @@ When Braze officially deprecates `logPurchase`, your implementation is already p
    - Simply remove the `logPurchase` routing from BrazeGTMTagManager.swift
    - All purchase data will flow exclusively through `ecommerce.order_placed`
    - Zero downtime, zero data loss
-
-**No action required from you** — the dual-logging system ensures continuity automatically.
