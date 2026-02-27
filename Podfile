@@ -11,6 +11,7 @@ pod 'Firebase'
 pod 'FirebaseCore'
 pod 'FirebaseAnalytics'
 pod 'FirebasePerformance'
+pod 'Firebase/Messaging'
 pod 'FirebaseCrashlytics'
 pod 'GoogleTagManager'
 

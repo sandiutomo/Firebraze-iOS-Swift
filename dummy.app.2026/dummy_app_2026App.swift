@@ -2,10 +2,11 @@ import SwiftUI
 import FirebaseCore
 import Firebase
 import FirebaseAnalytics
+import FirebaseMessaging
 import GoogleTagManager
 import BrazeKit
 
-class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
+class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate, MessagingDelegate {
     static var braze: Braze?
     
     func application(
@@ -33,12 +34,19 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         FirebaseApp.configure()
         print("# ⚡ Firebase initialized ⚡")
         // Enable Firebase SDK Debug (DEV ONLY)
+        #if DEBUG
         var args = ProcessInfo.processInfo.arguments
         args.append("-FIRAnalyticsDebugEnabled")
         args.append("-FIRAnalyticsVerboseLoggingEnabled")
         args.append("-FIRDebugEnabled")
         ProcessInfo.processInfo.setValue(args, forKey: "arguments")
         print("# ⚡ Firebase debug enabled ⚡")
+        #else
+        //
+        #endif
+        
+        // MARK: - Set The FCM Delegate
+        Messaging.messaging().delegate = self
         
         // MARK: - User Properties variable
          let userProperties: [String: String] = [
@@ -50,7 +58,10 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
              "home_city": "Jakarta",
              "language": "en",
              "phone_number": "+6281234567890",
-             "gender": "male"
+             "gender": "male",
+             "test_su_1": "test_su_1",
+             "test_su_2": "test_su_2",
+             "test_su_3": "test_su_3"
          ]
 
          userProperties.forEach { key, value in
@@ -101,7 +112,6 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
                print("# ❌ Container folder NOT found in bundle")
            }
            
-        // === STEP 3: Try different paths ===
         print("# ⚙️ === TRYING DIFFERENT PATHS === ⚙️")
            let pathsToTry = [
                Bundle.main.path(forResource: GoogleTagManagerSecrets.apiKey, ofType: "json"),  // TODO: Replace with your own container id
@@ -119,7 +129,8 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         
         // Request push notification permissions
         UNUserNotificationCenter.current().delegate = self
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+        let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+        UNUserNotificationCenter.current().requestAuthorization(options: authOptions) { granted, error in
             if granted {
                 print("# ✅ Push notifications authorized")
             } else {
@@ -129,14 +140,53 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
                 UIApplication.shared.registerForRemoteNotifications()
             }
         }
+        application.registerForRemoteNotifications()
+
         return true
     }
     
-    // MARK: - Handle device token registration
+    // MARK: - APNs Token → Forward to Firebase AND Braze
     func application(_ application: UIApplication,
                      didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        Messaging.messaging().apnsToken = deviceToken
         AppDelegate.braze?.notifications.register(deviceToken: deviceToken)
-        print("# ✅ Device token registered with Braze")
+        print("# ✅ Device token registered with Firebase + Braze")
+
+        let tokenString = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
+            print("# ✅ APNs token received: \(tokenString)")
+        
+        // MARK: - Fetch FCM Token (moved here so APNs token is guaranteed to be set first)
+        Messaging.messaging().token { token, error in
+            if let error = error {
+                print("# ❌ Error fetching FCM token: \(error)")
+            } else if let token = token {
+                print("# ✅ FCM Token: \(token)")
+            }
+        }
+    }
+
+    // MARK: - FCM Token auto-refresh listener
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+        guard let fcmToken else {
+            print("# ❌ FCM token is nil")
+            return
+        }
+        print("# ✅ FCM Token (refreshed): \(fcmToken)")
+        UserDefaults.standard.set(fcmToken, forKey: "fcmToken")
+    }
+
+    // MARK: - Foreground notification display
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                 willPresent notification: UNNotification,
+                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.banner, .badge, .sound])
+    }
+
+    // MARK: - Notification tap handling
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                 didReceive response: UNNotificationResponse,
+                                 withCompletionHandler completionHandler: @escaping () -> Void) {
+        AppDelegate.braze?.notifications.handleUserNotification(response: response, withCompletionHandler: completionHandler)
     }
 }
 
@@ -172,6 +222,7 @@ enum BrazeSecrets {
         return value
     }
 }
+
 enum GoogleTagManagerSecrets {
     static let apiKey: String = {
         value(for: "GTM_CONTAINER_ID")

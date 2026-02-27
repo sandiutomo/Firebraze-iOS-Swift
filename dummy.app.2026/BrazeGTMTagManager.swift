@@ -133,9 +133,9 @@ final class BrazeGTMTagManager : NSObject, TAGCustomFunction {
         case "view_item":
             brazeEventName = "ecommerce.product_viewed"
         case "add_to_cart":
-            brazeEventName = "ecommerce.product_added_to_cart"
+            brazeEventName = "ecommerce.cart_updated"
         case "remove_from_cart":
-            brazeEventName = "ecommerce.product_removed_from_cart"
+            brazeEventName = "ecommerce.cart_remove_product"
         case "view_cart":
             brazeEventName = "ecommerce.cart_viewed"
         case "begin_checkout":
@@ -143,7 +143,7 @@ final class BrazeGTMTagManager : NSObject, TAGCustomFunction {
         case "purchase":
             brazeEventName = "ecommerce.order_placed"
         case "refund":
-            brazeEventName = "ecommerce.purchase_refunded"
+            brazeEventName = "ecommerce.order_refunded"
         default:
             brazeEventName = eventName
         }
@@ -189,9 +189,11 @@ final class BrazeGTMTagManager : NSObject, TAGCustomFunction {
                 if let quantity = item["quantity"] {
                     brazeProperties["quantity"] = quantity
                 }
+                // Map GA4 currency
                 if let currency = parameters["currency"] as? String {
                     brazeProperties["currency"] = currency
                 }
+                // Map GA4 value
                 if let value = parameters["value"] {
                     brazeProperties["value"] = value
                 }
@@ -517,6 +519,7 @@ final class BrazeGTMTagManager : NSObject, TAGCustomFunction {
                 print("#        ⏩ Braze phoneNumber set to:", phone)
                 return
             }
+        }
             
             // Generic Custom Attributes
             if let stringValue = attributeValue as? String {
@@ -536,7 +539,6 @@ final class BrazeGTMTagManager : NSObject, TAGCustomFunction {
                 print("#        ⏩ Braze custom attribute (Date):", customAttributeKey, "=", dateValue)
             }
         }
-    }
     // MARK: - Log Change User
     func changeUser(parameters: [String: Any]) {
         guard let userId = parameters[ChangeUserExternalUserId] as? String,

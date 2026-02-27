@@ -6,6 +6,8 @@ import GoogleTagManager
 import BrazeKit
 
 struct ContentView: View {
+    @State private var showPermissionSheet = true
+    
     var body: some View {
         VStack {
             // MARK: -

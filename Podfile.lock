@@ -7,6 +7,9 @@ PODS:
     - FirebaseAnalytics (~> 12.8.0)
   - Firebase/CoreOnly (12.8.0):
     - FirebaseCore (~> 12.8.0)
+  - Firebase/Messaging (12.8.0):
+    - Firebase/CoreOnly
+    - FirebaseMessaging (~> 12.8.0)
   - FirebaseABTesting (12.8.0):
     - FirebaseCore (~> 12.8.0)
   - FirebaseAnalytics (12.8.0):
@@ -49,6 +52,15 @@ PODS:
     - GoogleUtilities/Environment (~> 8.1)
     - GoogleUtilities/UserDefaults (~> 8.1)
     - PromisesObjC (~> 2.4)
+  - FirebaseMessaging (12.8.0):
+    - FirebaseCore (~> 12.8.0)
+    - FirebaseInstallations (~> 12.8.0)
+    - GoogleDataTransport (~> 10.1)
+    - GoogleUtilities/AppDelegateSwizzler (~> 8.1)
+    - GoogleUtilities/Environment (~> 8.1)
+    - GoogleUtilities/Reachability (~> 8.1)
+    - GoogleUtilities/UserDefaults (~> 8.1)
+    - nanopb (~> 3.30910.0)
   - FirebasePerformance (12.8.0):
     - FirebaseCore (~> 12.8.0)
     - FirebaseInstallations (~> 12.8.0)
@@ -149,6 +161,7 @@ PODS:
 DEPENDENCIES:
   - BrazeKit
   - Firebase
+  - Firebase/Messaging
   - FirebaseAnalytics
   - FirebaseCore
   - FirebaseCrashlytics
@@ -166,6 +179,7 @@ SPEC REPOS:
     - FirebaseCoreInternal
     - FirebaseCrashlytics
     - FirebaseInstallations
+    - FirebaseMessaging
     - FirebasePerformance
     - FirebaseRemoteConfig
     - FirebaseRemoteConfigInterop
@@ -190,6 +204,7 @@ SPEC CHECKSUMS:
   FirebaseCoreInternal: fe5fa466aeb314787093a7dce9f0beeaad5a2a21
   FirebaseCrashlytics: fb31c6907e5b52aa252668394d3f1ab326df1511
   FirebaseInstallations: 6a14ab3d694ebd9f839c48d330da5547e9ca9dc0
+  FirebaseMessaging: 7f42cfd10ec64181db4e01b305a613791c8e782c
   FirebasePerformance: c5e1275c4eca020e7ba0633b1160e24c79bd1d09
   FirebaseRemoteConfig: e9e3909162a05bc0e796326255fd43250783a2a9
   FirebaseRemoteConfigInterop: 869ddca16614f979e5c931ece11fbb0b8729ed41
@@ -204,6 +219,6 @@ SPEC CHECKSUMS:
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   PromisesSwift: 9d77319bbe72ebf6d872900551f7eeba9bce2851
 
-PODFILE CHECKSUM: 825604b20bfdeb5115e752fe920e79d42758039d
+PODFILE CHECKSUM: da6fce825b6d3e6286ca2b5af69762a8e8eb9ae4
 
 COCOAPODS: 1.16.2
