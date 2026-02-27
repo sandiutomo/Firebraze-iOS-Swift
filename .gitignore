@@ -1,20 +1,17 @@
+# =========================
+# Secrets & Plist
+# =========================
+dummy-app-2026-Info.plist
+dummy.app.2026/secrets/
 BrazeSecrets.plist
-GoogleTagManagerSecrets.plist
-
 dummy.app.2026/BrazeSecrets.plist
+GoogleTagManagerSecrets.plist
 dummy.app.2026/GoogleTagManagerSecrets.plist
-
+GoogleService-Info.plist
+dummy.app.2026/GoogleService-Info.plist
 
 # =========================
 # Google Tag Manager (iOS)
 # =========================
 dummy.app.2026/container/
 dummy.app.2026/container/GTM-*.json
-
-# =========================
-# Firebase / Google Services
-# =========================
-GoogleService-Info.plist
-dummy.app.2026/GoogleService-Info.plist
-
-dummy.app.2026/secrets/
